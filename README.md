@@ -1,58 +1,76 @@
-# Real-Time T2S-MPC
+# T2S-MPC: Real-Time Online Adaptive Model Predictive Control for Continuously Changing Dynamics
 
-Research code for **T2S-MPC: Real-Time Online Adaptive Model Predictive Control for Continuously Changing Dynamics**.
+PyTorch and acados implementation of **T2S-MPC** for online adaptation to time-varying robot dynamics, with quadrotor and Unitree Go2 simulation experiments.
 
-T2S-MPC learns a time-conditioned neural residual model online. Fast updates adapt the output layer to recent observations; slower updates refine the hidden representation using recent and historical samples. A local linear approximation incorporates the learned model into MPC.
+[Method](#method) · [Installation](#installation) · [Experiments](#experiments) · [Code](#code)
 
-This repository brings together the three-dimensional quadrotor and Unitree Go2 simulation implementations, with explicit experiment configurations and separate entrypoints. It is a release preparation version: installation in a clean environment and full paper-result reproduction remain to be validated. The included source is extracted from the current research working tree; matching the selected experiment settings does not establish that every source file matches the historical run.
+<table>
+  <tr><td align="center"><img src="media/quadrotor.png" width="420" alt="Quadrotor simulation under changing wind"></td><td align="center"><img src="media/go2.png" width="420" alt="Go2 simulation with liquid payload and varying ground friction"></td></tr>
+  <tr><td align="center"><b>Quadrotor: time-varying wind</b></td><td align="center"><b>Go2: changing payload and friction</b></td></tr>
+</table>
+
+## Method
+
+**T2S-MPC** learns a time-conditioned neural residual model to compensate for changing dynamics. Fast updates adapt the output layer using recent observations; slow updates refine the hidden representation using recent and historical data. The residual is linearized along the predicted trajectory and incorporated into MPC, while model learning runs asynchronously with control.
+
+<p align="center">
+  <img src="media/method.png" width="900" alt="T2S-MPC overview: two-timescale online learning, residual dynamics, MPC, and robot feedback">
+</p>
+
+## Installation
+
+Use **Linux x86-64**, Conda, Git, and a C/C++ build toolchain. Create the environment and install the simulation dependencies:
+
+```bash
+git clone https://github.com/Zeyuu0920/real-time-T2S-MPC.git
+cd real-time-T2S-MPC
+conda env create -f environment.yaml
+conda activate t2s-mpc
+bash scripts/setup.sh --system all
+```
+
+Use `--system quadrotor` or `--system go2` to install only the corresponding simulator. The setup script installs the Python packages, builds acados, and checks out the pinned external dependencies. Add `--dry-run` to inspect these commands before installation.
+
+<details>
+<summary>Dependency versions and installation notes</summary>
+
+- Python 3.10, PyTorch 2.5.1, and L4CasADi 2.0.0; PyTorch is installed before building L4CasADi.
+- Quadrotor: PyBullet 3.2.7 and safe-control-gym. Go2: MuJoCo 3.3.0 and Pinocchio (`pin` 4.1.0).
+- Source revisions are recorded in [dependencies.json](docs/dependencies.json); Python versions are in [requirements/](requirements/). External checkouts and native libraries stay under `external/`.
+- The recorded safe-control-gym checkout declares PyTorch `^2.8`, while the research environment uses 2.5.1. Setup uses `--no-deps` for that checkout to retain the recorded versions; a declared dependency conflict remains.
+- First-time solver generation may download the Tera renderer. Video rendering also needs OpenGL/EGL or OSMesa. The experiment entrypoints configure their native-library paths automatically.
+
+</details>
 
 ## Experiments
 
-| System | Scenarios | Controllers |
+Run T2S-MPC in either simulator:
+
+```bash
+python scripts/run_quadrotor.py --method t2s --scenario combined --seed 42
+python scripts/run_go2.py --method t2s --scenario combined --seed 42
+```
+
+| System | `--scenario` | Trial duration |
 | --- | --- | --- |
-| Quadrotor (PyBullet) | Increasing mean wind, increasing turbulence, combined | Nominal, SSI, STGP, T2S |
-| Unitree Go2 (MuJoCo) | Liquid drain, varying friction, combined | Nominal, SSI, STGP, T2S |
+| Quadrotor | `mwi` (mean wind increase), `tii` (turbulence increase), `combined` | 20 s |
+| Go2 | `drain`, `friction`, `combined` | 60 s |
 
-The simulation uses measured controller computation time to determine command release. Timing results depend on the host and its load. These experiments do not establish hard real-time performance on a physical robot.
+Set `--method` to `nominal`, `ssi`, or `stgp` to run a baseline. The selected seeds are 42–51. Outputs are saved under `outputs/`; use `--output-dir` to choose another location. Both scripts provide `--help` and a `--dry-run` mode that works without the simulation dependencies.
 
-## Start here
+The quadrotor defaults pin control to CPU 2 and training to CPU 4; use `--no-affinity` on machines without those CPUs. Run trials serially within a checkout. Configurations, timing assumptions, and reporting details are described in [experiment protocols](docs/experiments.md).
 
-Inspect the selected configuration without installing simulation dependencies or starting an experiment:
+## Code
 
-```bash
-python scripts/run_quadrotor.py --method t2s --scenario combined --seed 42 --dry-run
-python scripts/run_go2.py --method t2s --scenario combined --seed 42 --dry-run
-```
+| To… | Start with… |
+| --- | --- |
+| Run an experiment | [scripts/](scripts/) |
+| Inspect or change experiment settings | [configs/](configs/) |
+| Study the learning algorithm | [models.py](src/models.py), [realtime_t2s.py](src/realtime_t2s.py), [hybrid_replay.py](src/hybrid_replay.py) |
+| Run the unit tests | [tests/](tests/) |
 
-See [installation](docs/installation.md) for the recorded environment and external dependencies, and [experiment protocols](docs/experiments.md) for the selected settings and scope of reproduction.
+Core and numerical tests have been run in the research environment. Clean installation and full closed-loop reproduction remain under validation; see the [validation notes](docs/validation.md).
 
-After installing the corresponding simulation environment, omit `--dry-run` to execute a single trial. Each entrypoint also provides `--help`.
+## Acknowledgements
 
-## Layout
-
-```text
-configs/       Explicit experiment settings
-assets/        Small experiment inputs, including stored Go2 friction maps
-src/           Controller, learning, dynamics, and simulation implementation
-scripts/       Public experiment entrypoints and required adapters
-tests/         Algorithm and numerical consistency tests
-requirements/  Recorded Python dependency versions
-docs/          Installation and experiment documentation
-```
-
-Generated solvers and experiment output are ignored by Git. Third-party projects are installed separately; see [dependency provenance](docs/dependencies.json).
-
-## Core tests
-
-The replay-buffer, command-release, and asynchronous-update tests run without either simulator:
-
-```bash
-python -m pip install -r requirements/test.txt
-python -m pytest tests/test_hybrid_replay.py tests/test_deadline_control.py tests/test_async_neural_update.py -q
-```
-
-Additional tests require the simulation dependencies. Full experiment reruns are separate from unit tests. See the [local validation record](docs/validation.md) for completed checks and their limits.
-
-## License and citation
-
-A project license and finalized citation have not yet been added. Dependency licenses remain with their respective projects. The paper title above identifies the work; this draft does not claim a publication venue or acceptance status.
+This implementation uses [acados](https://github.com/acados/acados), [L4CasADi](https://github.com/Tim-Salzmann/l4casadi), [safe-control-gym](https://github.com/learnsyslab/safe-control-gym), and [go2-convex-mpc](https://github.com/elijah-waichong-chan/go2-convex-mpc), with GP components from [L4acados](https://github.com/IntelligentControlSystems/l4acados). Third-party dependencies retain their respective licenses.
