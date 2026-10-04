@@ -2,12 +2,25 @@
 
 PyTorch and acados implementation of **T2S-MPC** for online adaptation to time-varying robot dynamics, with quadrotor and Unitree Go2 simulation experiments.
 
-[Method](#method) · [Installation](#installation) · [Experiments](#experiments) · [Code](#code)
+> **Code release pending.** The README and demonstration are available. Installation and experiment commands will work after the simulation source files are published.
 
-<table>
-  <tr><td align="center"><img src="media/quadrotor.png" width="420" alt="Quadrotor simulation under changing wind"></td><td align="center"><img src="media/go2.png" width="420" alt="Go2 simulation with liquid payload and varying ground friction"></td></tr>
-  <tr><td align="center"><b>Quadrotor: time-varying wind</b></td><td align="center"><b>Go2: changing payload and friction</b></td></tr>
-</table>
+## Table of Contents
+
+- [Demonstration Video](#demonstration-video)
+- [Method](#method)
+- [Installation](#installation)
+- [How to Run](#how-to-run)
+  - [Quadrotor: wind and turbulence](#quadrotor-wind-and-turbulence)
+  - [Go2: payload and ground friction](#go2-payload-and-ground-friction)
+- [Reproduce Paper Results](#reproduce-paper-results)
+- [Project Structure](#project-structure)
+- [Acknowledgements](#acknowledgements)
+
+## Demonstration Video
+
+[![T2S-MPC demonstration: quadrotor, Go2, and real-world experiments](media/demo-preview.gif)](https://github.com/Zeyuu0920/real-time-T2S-MPC/blob/main/media/t2s-mpc-demo.mp4)
+
+**[Watch the full demonstration (2:01, with audio)](https://github.com/Zeyuu0920/real-time-T2S-MPC/raw/refs/heads/main/media/t2s-mpc-demo.mp4).** The preview shows short excerpts; the full video includes quadrotor and Go2 simulations and the real-world wind experiment. This repository provides the two simulation implementations. [Video details](docs/demo.md).
 
 ## Method
 
@@ -42,34 +55,109 @@ Use `--system quadrotor` or `--system go2` to install only the corresponding sim
 
 </details>
 
-## Experiments
+## How to Run
 
-Run T2S-MPC in either simulator:
+Run a single experiment, choose a controller, and adjust the disturbance strength from the command line. `--method` accepts `t2s`, `nominal`, `ssi`, or `stgp`. Add `--dry-run` to inspect the effective settings without installing or starting a simulator.
+
+### Quadrotor: wind and turbulence
+
+<p align="center">
+  <img src="media/quadrotor.png" width="600" alt="Quadrotor tracking under changing wind">
+</p>
 
 ```bash
 python scripts/run_quadrotor.py --method t2s --scenario combined --seed 42
+```
+
+Choose `mwi` (increasing mean wind), `tii` (increasing turbulence), or `combined`. Each trial lasts 20 s by default.
+
+| Option | Effect | Default |
+| --- | --- | --- |
+| `--wind-scale` | Multiply the initial and final mean-wind vectors | `1.0` |
+| `--turbulence-scale` | Multiply the initial and final turbulence standard deviations | `1.0` |
+| `--duration` | Simulation duration in seconds | `20` |
+| `--seed` | Random seed | `42` |
+
+For example, increase mean wind by 50% and halve the turbulence:
+
+```bash
+python scripts/run_quadrotor.py --method t2s --scenario combined \
+  --seed 123 --wind-scale 1.5 --turbulence-scale 0.5 \
+  --output-dir outputs/quadrotor_custom
+```
+
+Both scale factors accept zero. They preserve the spatial pattern parameters and ramp duration. The defaults pin control to CPU 2 and training to CPU 4; add `--no-affinity` on machines without those CPUs, or choose cores with `--control-cpu-core` and `--trainer-cpu-core`.
+
+### Go2: payload and ground friction
+
+<p align="center">
+  <img src="media/go2.png" width="600" alt="Go2 walking with a liquid payload and varying ground friction">
+</p>
+
+```bash
 python scripts/run_go2.py --method t2s --scenario combined --seed 42
 ```
 
-| System | `--scenario` | Trial duration |
+Choose `drain` (draining liquid on uniform ground), `friction` (fixed payload on varying ground), or `combined`. Trials target 60 s. Seeds 42–51 select the stored spatial fields shared across controllers.
+
+| Option | Effect | Applies to |
 | --- | --- | --- |
-| Quadrotor | `mwi` (mean wind increase), `tii` (turbulence increase), `combined` | 20 s |
-| Go2 | `drain`, `friction`, `combined` | 60 s |
+| `--liquid-mass-scale` | Scale the liquid mass throughout draining; keep the 0.6 kg container | `drain`, `combined` |
+| `--payload-mass` | Fixed payload mass in kg; default `4.0` | `friction` |
+| `--friction-min`, `--friction-max` | Remap ground sliding friction to a new interval; default `[0.50, 0.80]` | `friction`, `combined` |
+| `--ground-friction` | Uniform ground sliding friction; default `0.8` | `drain` |
 
-Set `--method` to `nominal`, `ssi`, or `stgp` to run a baseline. The selected seeds are 42–51. Outputs are saved under `outputs/`; use `--output-dir` to choose another location. Both scripts provide `--help` and a `--dry-run` mode that works without the simulation dependencies.
+For example, use 50% more liquid and a more slippery ground interval:
 
-The quadrotor defaults pin control to CPU 2 and training to CPU 4; use `--no-affinity` on machines without those CPUs. Run trials serially within a checkout. Configurations, timing assumptions, and reporting details are described in [experiment protocols](docs/experiments.md).
+```bash
+python scripts/run_go2.py --method t2s --scenario combined --seed 42 \
+  --liquid-mass-scale 1.5 --friction-min 0.3 --friction-max 0.6 \
+  --output-dir outputs/go2_custom
+```
 
-## Code
+The liquid default is 3.4 → 1.4 kg during 5–45 s, in addition to the container. Friction overrides preserve the seed's spatial pattern and change the simulated ground; the MPC friction-cone coefficient stays at `0.5`.
 
-| To… | Start with… |
-| --- | --- |
-| Run an experiment | [scripts/](scripts/) |
-| Inspect or change experiment settings | [configs/](configs/) |
-| Study the learning algorithm | [models.py](src/models.py), [realtime_t2s.py](src/realtime_t2s.py), [hybrid_replay.py](src/hybrid_replay.py) |
-| Run the unit tests | [tests/](tests/) |
+Both runners save effective settings and trial outputs under `outputs/`; use a new `--output-dir` for a new comparison. Run trials serially within a checkout because solver generation shares build locations. See `--help` for all options.
 
-Core and numerical tests have been run in the research environment. Clean installation and full closed-loop reproduction remain under validation; see the [validation notes](docs/validation.md).
+## Reproduce Paper Results
+
+After installation, run the complete **simulation evaluation** with one command:
+
+```bash
+bash scripts/reproduce_paper.sh
+```
+
+This runs all four methods (`nominal`, `ssi`, `stgp`, `t2s`) across all three scenarios and ten seeds (42–51) for each system: **120 quadrotor + 120 Go2 trials**. It uses the fixed configurations in [configs/quadrotor.json](configs/quadrotor.json) and [configs/go2/final.json](configs/go2/final.json), without the custom disturbance overrides above.
+
+```bash
+# Inspect the full run list without starting simulations or writing outputs.
+bash scripts/reproduce_paper.sh --dry-run
+
+# Run one system, or choose another output directory.
+bash scripts/reproduce_paper.sh --system quadrotor --output-dir outputs/paper_quadrotor
+
+# Continue an interrupted evaluation, retaining recorded trial outcomes.
+bash scripts/reproduce_paper.sh --resume
+```
+
+Runs execute serially, with results under `outputs/paper/` by default. The script records per-trial logs and produces `trials.csv`, `summary.csv`, and `summary.json` in the evaluation directory. Summaries include every planned seed, completed-trial errors, and unsuccessful or incomplete trials. Existing results are preserved; `--resume` continues unfinished work without replacing a recorded robot failure with a new attempt.
+
+The script reruns the simulation protocol and summarizes the new measurements. The real-world experiment shown in the video requires hardware and is not part of this script. Measured controller latency depends on the host; exact numerical agreement with the paper has not yet been validated. See [experiment protocols](docs/experiments.md) and [validation notes](docs/validation.md).
+
+## Project Structure
+
+```text
+scripts/       Single-trial runners, environment setup, and paper evaluation
+configs/       Fixed simulation settings and seed lists
+src/           Online learning, MPC, dynamics, and simulator integration
+assets/        Frozen Go2 friction fields
+requirements/  Python dependency versions
+media/         Demonstration video, preview, and method figures
+tests/         Algorithm, numerical, and entrypoint tests
+docs/          Detailed protocols, provenance, and validation records
+```
+
+To study the learning algorithm, start with [models.py](src/models.py), [realtime_t2s.py](src/realtime_t2s.py), and [hybrid_replay.py](src/hybrid_replay.py).
 
 ## Acknowledgements
 
