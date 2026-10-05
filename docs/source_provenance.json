@@ -1,8 +1,18 @@
 {
-  "description": "Public source extracted from the research working tree, including uncommitted and untracked files. The base Git commit is not a complete snapshot of this code or the historical experiments. Hashes identify the release-preparation files listed below.",
+  "description": "Public source extracted from the research working tree, including uncommitted and untracked files, with public configuration interfaces and launchers. The base Git commit is not a complete snapshot of the code or historical experiments. Hashes cover every release file except this manifest itself.",
   "source_base_commit": "c18afdb5e165bcac68c2505edb9c4788d662854d",
-  "source_changes": "The public extraction changes acados library path resolution and quadrotor output destinations. Public launchers add explicit disturbance overrides and fixed-protocol batch evaluation. The Go2 adapter supports frozen or rescaled friction fields and liquid mass; the experiment logger reads actual fixed-ground friction instead of a hard-coded value. The core control and learning algorithms retain the research implementation.",
+  "source_changes": "The public extraction changes acados library path resolution and quadrotor output destinations. Public launchers add explicit environmental-disturbance overrides and fixed-protocol batch evaluation. The Go2 adapter supports frozen or rescaled friction fields and liquid mass; experiment loggers read actual fixed-ground friction. JSON profiles expose existing quadrotor observation and actuator settings. A separate Go2 sim2real runner exposes the research delayed-observation, joint-response, and intra-period command-release experiment, adapting its configuration loading, frozen fields, protocol metadata, and interruption diagnostics for public use. The paper Go2 runner, fixed evaluation settings, and core control/learning algorithms are unchanged by the interface addition.",
   "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "f031d1f15ce3df0e8896d0b75a1d40ff8a8c2118640976c03d81f121f765cc5b",
+      "bytes": 537
+    },
+    {
+      "path": "README.md",
+      "sha256": "3150fae0224abda1857917e0c0e21697bae20900845c44a01fcb788d04e6c87e",
+      "bytes": 10934
+    },
     {
       "path": "assets/go2/fields/seed42.npz",
       "sha256": "a32751ceb5aa83526e63fb54c0f879a40094ce70d5df68b1f8eb93c98d3dc886",
@@ -64,9 +74,39 @@
       "bytes": 5036
     },
     {
+      "path": "configs/sim2real/go2_example.json",
+      "sha256": "44c4df4da52a927bc34e812f8842ada1aeb17701e54300b7574bcb135cc977a9",
+      "bytes": 347
+    },
+    {
+      "path": "configs/sim2real/quadrotor_example.json",
+      "sha256": "76108d2ddf4b76f2c09f3cd3899f242304ab59bd88bfc3326f156ad6dc89c598",
+      "bytes": 413
+    },
+    {
       "path": "docs/demo.md",
       "sha256": "af8c5e2ce7b3376b2d5c119dcdd4b5ea9474df0f256b46bf7c1cc7b8f7e2b3bb",
       "bytes": 1224
+    },
+    {
+      "path": "docs/dependencies.json",
+      "sha256": "6ac950721f7cda36ca89280f2a4dad69566c1a7c675bd5a4dffee6a79b8c96e6",
+      "bytes": 1982
+    },
+    {
+      "path": "docs/experiments.md",
+      "sha256": "22b4d0273e17a4eb655017c19c883dab0b2efdd56589e2772bc2d553176afe70",
+      "bytes": 7012
+    },
+    {
+      "path": "docs/sim2real.md",
+      "sha256": "0cbca1682462b7b8a2019d4909967e5297881cc4322a87552773b69a1b716f01",
+      "bytes": 9274
+    },
+    {
+      "path": "docs/validation.md",
+      "sha256": "7073c7b4aedae5d4dfa5df0f2d89284e8483e33027e36b6367975d7577482a06",
+      "bytes": 5852
     },
     {
       "path": "environment.yaml",
@@ -114,6 +154,11 @@
       "transformation": "Copied without modification."
     },
     {
+      "path": "pytest.ini",
+      "sha256": "6c6ccf864e8f2d2e0223ee8e39bfde660c12435aa37d81e2b14000a6bee15003",
+      "bytes": 42
+    },
+    {
       "path": "requirements/core.txt",
       "sha256": "4d5d90c81b286dda4466a1ac07922e5711ea695ae599bada53f38d3bccc7026b",
       "bytes": 77
@@ -154,9 +199,14 @@
       "bytes": 10171
     },
     {
+      "path": "scripts/run_go2_sim2real.py",
+      "sha256": "219479e51689e72314a1f6aaae6a8f04fbc09bcfcf0cd1a1fb36aa58ac7e56cd",
+      "bytes": 6845
+    },
+    {
       "path": "scripts/run_quadrotor.py",
-      "sha256": "fe73c859684636f27ba4dd06ccd894a3b70b82973a1c4f6e7d259234bf6c7b31",
-      "bytes": 10110
+      "sha256": "7551f588f22d16d93afdf6c9d89300c5dc8edfd40bde87c1d9f3d12fa17b16b0",
+      "bytes": 11429
     },
     {
       "path": "scripts/setup.sh",
@@ -262,7 +312,7 @@
       "bytes": 31004,
       "source_working_tree_path": "src/go2_icra_experiment.py",
       "source_sha256": "19437b592c835655b7333fa42f53b863f63b11018c2fca57bc4cbee6136548b5",
-      "unchanged_from_source": true
+      "unchanged_from_source": false
     },
     {
       "path": "src/go2_icra_latency.py",
@@ -334,12 +384,41 @@
       "unchanged_from_source": true
     },
     {
+      "path": "src/go2_realism_controller.py",
+      "sha256": "4b3c4db5d6b744cf643c3eb9b3ae778c2ef5970478c97b52c647d3bf4165c328",
+      "bytes": 20794,
+      "source_working_tree_path": "src/go2_realism_controller.py",
+      "source_sha256": "d8685b74b7cd098e4e5823bc344b212331da8c9e000115278fe5619403543fbf",
+      "unchanged_from_source": false
+    },
+    {
+      "path": "src/go2_realism_experiment.py",
+      "sha256": "c9e3917fa3eff3ed7b60e420f4bbf0a960f6996006a5b35655bab572d7b3feeb",
+      "bytes": 18695,
+      "source_working_tree_path": "src/go2_realism_experiment.py",
+      "source_sha256": "9af12a055cd3e4d392f716a6ed8c4ff335088d52626a725ba20ea138648daff7",
+      "unchanged_from_source": false
+    },
+    {
+      "path": "src/go2_realism_io.py",
+      "sha256": "41ebbd36ecf5764142ca27b926e0f15e07fe7f0762c105d47e2bcc98e5c0bd08",
+      "bytes": 3762,
+      "source_working_tree_path": "src/go2_realism_io.py",
+      "source_sha256": "c06a0990ec0b3213d9a0c9cbb8fab6acdae7efe47d2de7a4420cd2f690702eb5",
+      "unchanged_from_source": false
+    },
+    {
       "path": "src/go2_reference.py",
       "sha256": "d1c363f40fbccd940b19fa00608932952e87e765ee44d8e70f3917264bc2fc78",
       "bytes": 4975,
       "source_working_tree_path": "src/go2_reference.py",
       "source_sha256": "d1c363f40fbccd940b19fa00608932952e87e765ee44d8e70f3917264bc2fc78",
       "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_sim2real_config.py",
+      "sha256": "8490af1451159f7d640b515d3dfbed3d72ecfaed6a0631913ce6a1af5d333b15",
+      "bytes": 4478
     },
     {
       "path": "src/go2_stgp.py",
@@ -454,6 +533,11 @@
       "unchanged_from_source": true
     },
     {
+      "path": "src/sim2real_config.py",
+      "sha256": "3740c74dee5cbda71194efc42b5373a8bf6ecdae7458f08496d0ddca071ebec7",
+      "bytes": 6396
+    },
+    {
       "path": "src/spatiotemporal_gp_mpc.py",
       "sha256": "76fc6cd6e1c453728ac92ff222eda142af0c8b7e5ef3a0330d43324b619a66e5",
       "bytes": 26123,
@@ -518,6 +602,11 @@
       "unchanged_from_source": true
     },
     {
+      "path": "tests/test_go2_sim2real.py",
+      "sha256": "938f1213245e0d5379fe1fdfb66f01de520c4bb61524e7627726060ecaa953de",
+      "bytes": 14464
+    },
+    {
       "path": "tests/test_hybrid_replay.py",
       "sha256": "b6c6dd703aa5fac2b42e402009c0d3a15ede51d8dac2ae962bfbe95f7151eabd",
       "bytes": 3198,
@@ -555,6 +644,11 @@
       "path": "tests/test_run_quadrotor.py",
       "sha256": "72f374ad6c8840ee567332a12fa5884648d00060aec52dec09a96dc0dfd4f7fc",
       "bytes": 5719
+    },
+    {
+      "path": "tests/test_sim2real_config.py",
+      "sha256": "3d3adf7e4a23a46c0c34cf28994413f690c7287d8aae6ee2d1473a54d2c9463f",
+      "bytes": 14350
     },
     {
       "path": "tests/test_ssi_rk4_aligned.py",

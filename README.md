@@ -10,6 +10,7 @@ PyTorch and acados implementation of **T2S-MPC** for online adaptation to time-v
 - [How to Run](#how-to-run)
   - [Quadrotor: wind and turbulence](#quadrotor-wind-and-turbulence)
   - [Go2: payload and ground friction](#go2-payload-and-ground-friction)
+  - [Sim-to-real interfaces](#sim-to-real-interfaces)
 - [Reproduce Paper Results](#reproduce-paper-results)
 - [Project Structure](#project-structure)
 - [Acknowledgements](#acknowledgements)
@@ -117,6 +118,29 @@ The liquid default is 3.4 → 1.4 kg during 5–45 s, in addition to the contain
 
 Both runners save effective settings and trial outputs under `outputs/`; use a new `--output-dir` for a new comparison. Run trials serially within a checkout because solver generation shares build locations. See `--help` for all options.
 
+### Sim-to-real interfaces
+
+Use a JSON profile to customize the simulated observation and actuator interfaces. Start from an [example profile](configs/sim2real/) and edit its `observation` and `actuator` sections; fields include physical units in their names.
+
+| Interface | Quadrotor | Go2 sim-to-real mode |
+| --- | --- | --- |
+| Observation | Delay and position, velocity, attitude, and body-rate noise | Coherent delayed/noisy MPC state packet |
+| Actuator | Rotor-speed lag, fixed thrust-gain error, and correlated thrust noise | Joint-torque lag and fixed joint-gain error |
+
+```bash
+python scripts/run_quadrotor.py --method t2s --scenario combined \
+  --sim2real-config configs/sim2real/quadrotor_example.json \
+  --output-dir outputs/quadrotor_sim2real
+
+python scripts/run_go2_sim2real.py --method t2s --scenario combined \
+  --sim2real-config configs/sim2real/go2_example.json \
+  --output-dir outputs/go2_sim2real
+```
+
+Add `--dry-run` to inspect effective values. The profile and its hash are recorded with each trial. These parameters are synthetic stress-test settings that you can replace with measurements from your hardware.
+
+Go2 uses a separate experimental driver with delayed MPC observations, joint response, and command release within the control period; its 500 Hz low-level controller retains ideal proprioception. It is a different timing protocol from `run_go2.py`. For the quadrotor, the motor time constant also updates the MPC model and motor-state observer; gain error and thrust noise are hidden plant disturbances. See [interface parameters and examples](docs/sim2real.md).
+
 ## Reproduce Paper Results
 
 After installation, run the complete **simulation evaluation** with one command:
@@ -125,7 +149,7 @@ After installation, run the complete **simulation evaluation** with one command:
 bash scripts/reproduce_paper.sh
 ```
 
-This runs all four methods (`nominal`, `ssi`, `stgp`, `t2s`) across all three scenarios and ten seeds (42–51) for each system: **120 quadrotor + 120 Go2 trials**. It uses the fixed configurations in [configs/quadrotor.json](configs/quadrotor.json) and [configs/go2/final.json](configs/go2/final.json), without the custom disturbance overrides above.
+This runs all four methods (`nominal`, `ssi`, `stgp`, `t2s`) across all three scenarios and ten seeds (42–51) for each system: **120 quadrotor + 120 Go2 trials**. It uses the fixed configurations in [configs/quadrotor.json](configs/quadrotor.json) and [configs/go2/final.json](configs/go2/final.json), without the custom disturbance overrides or sim-to-real profiles above.
 
 ```bash
 # Inspect the full run list without starting simulations or writing outputs.
@@ -146,7 +170,7 @@ The script reruns the simulation protocol and summarizes the new measurements. T
 
 ```text
 scripts/       Single-trial runners, environment setup, and paper evaluation
-configs/       Fixed simulation settings and seed lists
+configs/       Fixed evaluation settings and editable interface profiles
 src/           Online learning, MPC, dynamics, and simulator integration
 assets/        Frozen Go2 friction fields
 requirements/  Python dependency versions

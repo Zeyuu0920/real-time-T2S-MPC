@@ -13,6 +13,14 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+# Reading a profile/dry-run must not create local import cache files.
+_write_bytecode = sys.dont_write_bytecode
+sys.dont_write_bytecode = True
+try:
+    from src.sim2real_config import apply_quadrotor_config, load_quadrotor_config
+finally:
+    sys.dont_write_bytecode = _write_bytecode
 THREAD_VARIABLES = (
     "OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS",
 )
@@ -54,13 +62,23 @@ def parse_args():
                         help="Multiply all mean-wind start/end components (default: 1); turbulence is set separately")
     parser.add_argument("--turbulence-scale", type=nonnegative_finite, default=1.0,
                         help="Multiply all turbulence standard-deviation start/end components (default: 1)")
+    parser.add_argument("--sim2real-config", type=Path,
+                        help="JSON profile overriding observation delay/noise and first-order motor parameters")
     parser.add_argument("--result-tag", default="public", help="Up to 16 ASCII letters, digits, underscore or hyphen")
     parser.add_argument("--control-cpu-core", type=int, help="Override recorded control CPU 2")
     parser.add_argument("--trainer-cpu-core", type=int, help="Override recorded T2S trainer CPU 4")
     parser.add_argument("--no-affinity", action="store_true", help="Omit original CPU pinning; timing will use a different resource setup")
     parser.add_argument("--dry-run", action="store_true", help="Print exact runs and arguments without importing simulation dependencies")
     parser.add_argument("--_worker", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--_sim2real-sha256", help=argparse.SUPPRESS)
     args = parser.parse_args()
+    if args._sim2real_sha256 and (not args._worker or args.sim2real_config is None):
+        parser.error("Internal sim2real hash requires a worker and --sim2real-config")
+    try:
+        args.sim2real_profile = (load_quadrotor_config(args.sim2real_config, args._sim2real_sha256)
+                                 if args.sim2real_config is not None else None)
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
     if args.duration is not None and (not math.isfinite(args.duration) or args.duration <= 0):
         parser.error("--duration must be finite and positive")
     if len(args.result_tag) > 16 or any(not (c.isascii() and (c.isalnum() or c in "_-")) for c in args.result_tag):
@@ -91,6 +109,7 @@ def selected_runs(args, config):
                     flags[flags.index("--duration") + 1] = str(args.duration)
                 flags += config["scenarios"][scenario]["args"] + method["args"]
                 scale_disturbances(flags, args.wind_scale, args.turbulence_scale)
+                flags, sim2real = apply_quadrotor_config(flags, getattr(args, "sim2real_profile", None))
                 flags += ["--seed", str(seed), "--result-tag", args.result_tag, "--output-dir", str(output)]
                 affinity = {}
                 if not args.no_affinity:
@@ -103,7 +122,7 @@ def selected_runs(args, config):
                        "module": method["module"], "output_dir": str(output),
                        "cpu_affinity": affinity,
                        "disturbance_scales": {"mean_wind": args.wind_scale, "turbulence": args.turbulence_scale},
-                       "args": flags}
+                       "sim2real": sim2real, "args": flags}
 
 
 def runtime_environment(config):
@@ -170,6 +189,9 @@ def main():
                    "--seed", str(run["seed"]), "--config", str(args.config.resolve()),
                    "--output-dir", str(args.output_dir.resolve()), "--result-tag", args.result_tag,
                    "--wind-scale", str(args.wind_scale), "--turbulence-scale", str(args.turbulence_scale)]
+        if args.sim2real_profile is not None:
+            command += ["--sim2real-config", args.sim2real_profile["path"],
+                        "--_sim2real-sha256", args.sim2real_profile["sha256"]]
         if args.duration is not None:
             command += ["--duration", str(args.duration)]
         if args.no_affinity:

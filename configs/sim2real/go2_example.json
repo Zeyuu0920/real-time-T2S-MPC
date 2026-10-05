@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "system": "go2",
+  "observation": {
+    "delay_steps": 1,
+    "position_noise_std_m": 0.01,
+    "velocity_noise_std_mps": 0.02,
+    "attitude_noise_std_rad": 0.01,
+    "body_rate_noise_std_radps": 0.02,
+    "noise_correlation_time_s": 0.10
+  },
+  "actuator": {
+    "time_constant_s": 0.005,
+    "gain_range": 0.03
+  }
+}
