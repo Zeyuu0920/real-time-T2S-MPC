@@ -1,0 +1,41 @@
+# Local environments and credentials
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+.idea/
+.vscode/
+.DS_Store
+
+# Python caches and packaging
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Generated solvers, native binaries, and experiment output
+**/c_generated_code*/
+**/_l4c_generated*/
+**/*_ocp.json
+**/acados_ocp.json
+/go2_paper_fe_acados_*.json
+*.so
+*.o
+*.a
+*.log
+/output/
+/outputs/
+/results*/
+/runs/
+/external/
+
+# Media exports and local scratch files
+*.mp4
+!/media/t2s-mpc-demo.mp4
+*.zip
+*.bak

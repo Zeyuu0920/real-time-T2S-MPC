@@ -1,0 +1,568 @@
+{
+  "description": "Public source extracted from the research working tree, including uncommitted and untracked files. The base Git commit is not a complete snapshot of this code or the historical experiments. Hashes identify the release-preparation files listed below.",
+  "source_base_commit": "c18afdb5e165bcac68c2505edb9c4788d662854d",
+  "source_changes": "The public extraction changes acados library path resolution and quadrotor output destinations. Public launchers add explicit disturbance overrides and fixed-protocol batch evaluation. The Go2 adapter supports frozen or rescaled friction fields and liquid mass; the experiment logger reads actual fixed-ground friction instead of a hard-coded value. The core control and learning algorithms retain the research implementation.",
+  "files": [
+    {
+      "path": "assets/go2/fields/seed42.npz",
+      "sha256": "a32751ceb5aa83526e63fb54c0f879a40094ce70d5df68b1f8eb93c98d3dc886",
+      "bytes": 93028
+    },
+    {
+      "path": "assets/go2/fields/seed43.npz",
+      "sha256": "91712095e969f4d8c76b76c6db965a392f841b4387fe9fb3b0dee3761c0382d5",
+      "bytes": 93681
+    },
+    {
+      "path": "assets/go2/fields/seed44.npz",
+      "sha256": "d45cb7d17489cbcf63baa10e439cb808cde35b9ad39bbdf57dea8435f1e5a96a",
+      "bytes": 93754
+    },
+    {
+      "path": "assets/go2/fields/seed45.npz",
+      "sha256": "6c2a6c0e918319cd89f6d08de7d0900ed66f5ae90a4dd21959d499851161bb51",
+      "bytes": 93642
+    },
+    {
+      "path": "assets/go2/fields/seed46.npz",
+      "sha256": "066bb2dc097cb5c0fbe54d98489ad24f30cc10511a6d7ddb07ea8059a73c6161",
+      "bytes": 94054
+    },
+    {
+      "path": "assets/go2/fields/seed47.npz",
+      "sha256": "9c8b3d12896b0884eb55195fc45881632d9a7b295e8e8f2c68df518f9f1ca6de",
+      "bytes": 92794
+    },
+    {
+      "path": "assets/go2/fields/seed48.npz",
+      "sha256": "fd4b7c9fdf54f60ead3c77a036b51c09e43d8056bf473112ccb2d0c74ffed9bc",
+      "bytes": 93635
+    },
+    {
+      "path": "assets/go2/fields/seed49.npz",
+      "sha256": "a6b5106e99c9ee3e83039aba776c7ba9e4916fd6fad0c7bcde1cd5f252d2dee3",
+      "bytes": 93358
+    },
+    {
+      "path": "assets/go2/fields/seed50.npz",
+      "sha256": "7d4f07dc37407c711e4a60dcc0ae05de9572c00b99a3286ad3ca28d4df20b17d",
+      "bytes": 93659
+    },
+    {
+      "path": "assets/go2/fields/seed51.npz",
+      "sha256": "884b2a1695b3b100808d327983ea3d807b3ff1df99713bed004898261c23b1b8",
+      "bytes": 93459
+    },
+    {
+      "path": "configs/go2/final.json",
+      "sha256": "5063e8a296c8711773915cad42549dfb6dddbc65cc2a2f3b8e7430ddb0f6bd89",
+      "bytes": 122671
+    },
+    {
+      "path": "configs/quadrotor.json",
+      "sha256": "7a65c88f49501e437f9fbf4be6c3101a1f4a2bc5031a1c6f3ceb90127008d0ac",
+      "bytes": 5036
+    },
+    {
+      "path": "docs/demo.md",
+      "sha256": "af8c5e2ce7b3376b2d5c119dcdd4b5ea9474df0f256b46bf7c1cc7b8f7e2b3bb",
+      "bytes": 1224
+    },
+    {
+      "path": "environment.yaml",
+      "sha256": "42129b2bbb6f94342c8e4022b9eefe5aff57c9eab3ea3a995bd47c584f600a88",
+      "bytes": 78
+    },
+    {
+      "path": "media/demo-preview.gif",
+      "sha256": "871f7493759ebb03d2a5999ba10d0c33e4fc44674b5c988e9c94cdc4106711d5",
+      "bytes": 4807740,
+      "source_asset": "media/t2s-mpc-demo.mp4",
+      "source_asset_sha256": "c7601c1816f990632a7ed37931e79d3181ca1e4155a96f887c94c44778c17228",
+      "transformation": "Concatenate original-speed intervals 46-49s, 75-78s, 105-108s; resize width 720; sample 10fps; 128-color GIF."
+    },
+    {
+      "path": "media/go2.png",
+      "sha256": "0cfb40949fe085a5a9ac9b3f10893381564aa56103d1dc54d68f2bc87c83d8d5",
+      "bytes": 680040,
+      "source_asset": "go2_benchmark_combined.png",
+      "source_asset_sha256": "0cfb40949fe085a5a9ac9b3f10893381564aa56103d1dc54d68f2bc87c83d8d5",
+      "transformation": "Copied without modification."
+    },
+    {
+      "path": "media/method.png",
+      "sha256": "c8f2f778ff6ee0e4a9f5a2bffb36bf4d0be8f19153daf5e0fb97b2c365960219",
+      "bytes": 408072,
+      "source_asset": "Overview_figure_cropped.pdf",
+      "source_asset_sha256": "eb304692a3888a141f026b1164bb61c52597d03f25f6bbe2980d5fd116778e98",
+      "transformation": "Rendered complete PDF page to PNG at 1800 pixels width."
+    },
+    {
+      "path": "media/quadrotor.png",
+      "sha256": "f90a2ffd74347e6929823cce25152e8d74ec606cb6777413510f34670f4e4f63",
+      "bytes": 208133,
+      "source_asset": "quadrotor_combined.png",
+      "source_asset_sha256": "f90a2ffd74347e6929823cce25152e8d74ec606cb6777413510f34670f4e4f63",
+      "transformation": "Copied without modification."
+    },
+    {
+      "path": "media/t2s-mpc-demo.mp4",
+      "sha256": "c7601c1816f990632a7ed37931e79d3181ca1e4155a96f887c94c44778c17228",
+      "bytes": 20352704,
+      "source_asset": "full_narrated_v9_thanks/submission_under20MiB/T2S_MPC_ICRA_video.mp4",
+      "source_asset_sha256": "c7601c1816f990632a7ed37931e79d3181ca1e4155a96f887c94c44778c17228",
+      "transformation": "Copied without modification."
+    },
+    {
+      "path": "requirements/core.txt",
+      "sha256": "4d5d90c81b286dda4466a1ac07922e5711ea695ae599bada53f38d3bccc7026b",
+      "bytes": 77
+    },
+    {
+      "path": "requirements/go2.txt",
+      "sha256": "7375209c48b6bb7698072e6b9ad8a3adbeb32170100aacf2d05a4e85ea25383e",
+      "bytes": 193
+    },
+    {
+      "path": "requirements/quadrotor.txt",
+      "sha256": "acd3fa48b8508d5914ad2d4ad31c45a02aa9ab782c9c5067f1f88b9de2c5686e",
+      "bytes": 229
+    },
+    {
+      "path": "requirements/simulation.txt",
+      "sha256": "98949c265038db69dddb904fdb882c137b1ba2b0472e2e00a527eec4a2c7359d",
+      "bytes": 504
+    },
+    {
+      "path": "requirements/test.txt",
+      "sha256": "8fc3202439c35e4997940f2fb1b056da0d207832576b995762bd3c984b0a6332",
+      "bytes": 26
+    },
+    {
+      "path": "scripts/reproduce_paper.py",
+      "sha256": "b17016f34a7880c1283378bec442f0f02a9da5bce83fbe637ee8b8ed03d5c406",
+      "bytes": 12681
+    },
+    {
+      "path": "scripts/reproduce_paper.sh",
+      "sha256": "c6ea80d45e0c3cbea63ab31377bd71fa8109951692ce7e5122097411a0e8ed3d",
+      "bytes": 157
+    },
+    {
+      "path": "scripts/run_go2.py",
+      "sha256": "104b0b94a21cdfb060ff8045c964fdb5e25dcbe9352cb9ba8966ccfea99371ab",
+      "bytes": 10171
+    },
+    {
+      "path": "scripts/run_quadrotor.py",
+      "sha256": "fe73c859684636f27ba4dd06ccd894a3b70b82973a1c4f6e7d259234bf6c7b31",
+      "bytes": 10110
+    },
+    {
+      "path": "scripts/setup.sh",
+      "sha256": "a834ec47cf3a2427a03a991408bd208d0da3d26f1508782b424d7b201303398e",
+      "bytes": 6168
+    },
+    {
+      "path": "scripts/summarize_results.py",
+      "sha256": "8ee4c6866974f08b6930c3b8bf9df76c82b2acd633128f43f9f60a90c946db40",
+      "bytes": 16147
+    },
+    {
+      "path": "src/actuated_quadrotor_dynamics.py",
+      "sha256": "7aeea69ac869cfd5dc0b0bf277b19ab4aa5ea0444acb0bb97bf5854195d45c97",
+      "bytes": 3595,
+      "source_working_tree_path": "src/actuated_quadrotor_dynamics.py",
+      "source_sha256": "7aeea69ac869cfd5dc0b0bf277b19ab4aa5ea0444acb0bb97bf5854195d45c97",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/aligned_quadrotor_transition.py",
+      "sha256": "b6c329e1831494975fa7464743baa3e307f89fd544cc0c785459c26bad48237f",
+      "bytes": 10316,
+      "source_working_tree_path": "src/aligned_quadrotor_transition.py",
+      "source_sha256": "b6c329e1831494975fa7464743baa3e307f89fd544cc0c785459c26bad48237f",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/async_neural_update.py",
+      "sha256": "eb4f1e48606f6b1a7e5edd14e5f64fb9943fdc3515e5bd210b3e3ca87f144f93",
+      "bytes": 6264,
+      "source_working_tree_path": "src/async_neural_update.py",
+      "source_sha256": "eb4f1e48606f6b1a7e5edd14e5f64fb9943fdc3515e5bd210b3e3ca87f144f93",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/calibrated_stgp.py",
+      "sha256": "50f5e6ac649434efdf61090bb71ca53ffef2caf8d3ef871454692cbe1c392c77",
+      "bytes": 7359,
+      "source_working_tree_path": "src/calibrated_stgp.py",
+      "source_sha256": "50f5e6ac649434efdf61090bb71ca53ffef2caf8d3ef871454692cbe1c392c77",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/calibrated_stgp_quadrotor3d_experiment.py",
+      "sha256": "8c378e87aa99d6622ac7f927737434a9ac1495a5285b1bc2337d0df451f2fe56",
+      "bytes": 121091,
+      "source_working_tree_path": "src/calibrated_stgp_quadrotor3d_experiment.py",
+      "source_sha256": "16406aaca7e2518a3d450f93ae2442cb95a139b0ba84acb6a3000c8fd588fc69",
+      "unchanged_from_source": false
+    },
+    {
+      "path": "src/deadline_control.py",
+      "sha256": "e6dd521d7ed531144108659fa8bec099c12beddaad2c6f0873e1e5254d3a3b61",
+      "bytes": 4926,
+      "source_working_tree_path": "src/deadline_control.py",
+      "source_sha256": "e6dd521d7ed531144108659fa8bec099c12beddaad2c6f0873e1e5254d3a3b61",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_contact.py",
+      "sha256": "93d89c1bfd634a53c18ac1e1b64fdc013a40f6ed1adeb7de606e228c249f803d",
+      "bytes": 6637,
+      "source_working_tree_path": "src/go2_contact.py",
+      "source_sha256": "93d89c1bfd634a53c18ac1e1b64fdc013a40f6ed1adeb7de606e228c249f803d",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_friction.py",
+      "sha256": "e2609da0bd42c5fe42823e73b391e04a1a67eebec421b48edb0e1bef8b5ab0cc",
+      "bytes": 13630,
+      "source_working_tree_path": "src/go2_friction.py",
+      "source_sha256": "e2609da0bd42c5fe42823e73b391e04a1a67eebec421b48edb0e1bef8b5ab0cc",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_icra_clock.py",
+      "sha256": "63930de0ab85124c9a349e4b57c280a99066b4554d8605c9a97c3fc5466e4f1e",
+      "bytes": 1173,
+      "source_working_tree_path": "src/go2_icra_clock.py",
+      "source_sha256": "63930de0ab85124c9a349e4b57c280a99066b4554d8605c9a97c3fc5466e4f1e",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_icra_controller.py",
+      "sha256": "1c28deae9f139f98b681047f7d641433d23c33b385c2f47918d878dfab9e1aef",
+      "bytes": 20453,
+      "source_working_tree_path": "src/go2_icra_controller.py",
+      "source_sha256": "1c28deae9f139f98b681047f7d641433d23c33b385c2f47918d878dfab9e1aef",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_icra_diagnostics.py",
+      "sha256": "42d2c44a6078b4ff92e8343dee87a46911f23db068c40e5c74676f84145494da",
+      "bytes": 2993,
+      "source_working_tree_path": "src/go2_icra_diagnostics.py",
+      "source_sha256": "42d2c44a6078b4ff92e8343dee87a46911f23db068c40e5c74676f84145494da",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_icra_experiment.py",
+      "sha256": "f59a40932fda12facda004e1c2408d63c46acd893e160e5fcfdb879641d71d38",
+      "bytes": 31004,
+      "source_working_tree_path": "src/go2_icra_experiment.py",
+      "source_sha256": "19437b592c835655b7333fa42f53b863f63b11018c2fca57bc4cbee6136548b5",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_icra_latency.py",
+      "sha256": "d3dcf19df28f121e0e6f3bbbbd076cd37852246eb55e07530582bbdafcddb77c",
+      "bytes": 3801,
+      "source_working_tree_path": "src/go2_icra_latency.py",
+      "source_sha256": "d3dcf19df28f121e0e6f3bbbbd076cd37852246eb55e07530582bbdafcddb77c",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_icra_protocol.py",
+      "sha256": "4b58f238a9b90f54e51062f4856508d57176cedcd9c094d5b990b30656d67d14",
+      "bytes": 5754,
+      "source_working_tree_path": "src/go2_icra_protocol.py",
+      "source_sha256": "4b58f238a9b90f54e51062f4856508d57176cedcd9c094d5b990b30656d67d14",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_liquid.py",
+      "sha256": "3fc1c731b4913c03b39b33600659e9704a090545ab183aa42b6704fff4f5b6a9",
+      "bytes": 17863,
+      "source_working_tree_path": "src/go2_liquid.py",
+      "source_sha256": "3fc1c731b4913c03b39b33600659e9704a090545ab183aa42b6704fff4f5b6a9",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_paper_acados.py",
+      "sha256": "0df08806396411b389eb3535016cbb1a06e94709def6302d3d85db9f926e93ee",
+      "bytes": 29348,
+      "source_working_tree_path": "src/go2_paper_acados.py",
+      "source_sha256": "0a24595f40b34433e2b9f3bf8f8241aba1c2cc9b6a31000b03398d1ee7cc847c",
+      "unchanged_from_source": false
+    },
+    {
+      "path": "src/go2_paper_acados_experiment.py",
+      "sha256": "0747e6408f99336e104575ed05a7fe4d03b3e1379cca77604b31405d47bc316c",
+      "bytes": 73271,
+      "source_working_tree_path": "src/go2_paper_acados_experiment.py",
+      "source_sha256": "0747e6408f99336e104575ed05a7fe4d03b3e1379cca77604b31405d47bc316c",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_paper_baseline.py",
+      "sha256": "ecbc4ba83b73f962f95f42911cc616a5877d965a5648bd3ce756d25eb2bd4283",
+      "bytes": 26287,
+      "source_working_tree_path": "src/go2_paper_baseline.py",
+      "source_sha256": "ecbc4ba83b73f962f95f42911cc616a5877d965a5648bd3ce756d25eb2bd4283",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_paper_experiment.py",
+      "sha256": "dbf193195cf3b43e8203a7a44f25c6814910f39e498899a35cf412fa929423d8",
+      "bytes": 31129,
+      "source_working_tree_path": "src/go2_paper_experiment.py",
+      "source_sha256": "dbf193195cf3b43e8203a7a44f25c6814910f39e498899a35cf412fa929423d8",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_public_protocol.py",
+      "sha256": "7339badbd4fa709bd250e28ce6fa3adc8f435eea78e70c66d2fef4170db58e40",
+      "bytes": 7988
+    },
+    {
+      "path": "src/go2_quad_sdk_low_level.py",
+      "sha256": "739e6efa041bae08d373e8b04fa9c19b96149bd4d773281423c6cf68ced48061",
+      "bytes": 19121,
+      "source_working_tree_path": "src/go2_quad_sdk_low_level.py",
+      "source_sha256": "739e6efa041bae08d373e8b04fa9c19b96149bd4d773281423c6cf68ced48061",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_reference.py",
+      "sha256": "d1c363f40fbccd940b19fa00608932952e87e765ee44d8e70f3917264bc2fc78",
+      "bytes": 4975,
+      "source_working_tree_path": "src/go2_reference.py",
+      "source_sha256": "d1c363f40fbccd940b19fa00608932952e87e765ee44d8e70f3917264bc2fc78",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_stgp.py",
+      "sha256": "f505fe4ef5b8c3ef1581b01a7f7c4fba4fe501b9493ce61b221b828369aab35a",
+      "bytes": 4348,
+      "source_working_tree_path": "src/go2_stgp.py",
+      "source_sha256": "f505fe4ef5b8c3ef1581b01a7f7c4fba4fe501b9493ce61b221b828369aab35a",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/go2_t2s_hybrid_replay.py",
+      "sha256": "987f6d6cdf6a156c13757ceb65ecb56290642bc6ba28134c80c4461bcd7e7567",
+      "bytes": 2298,
+      "source_working_tree_path": "src/go2_t2s_hybrid_replay.py",
+      "source_sha256": "987f6d6cdf6a156c13757ceb65ecb56290642bc6ba28134c80c4461bcd7e7567",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/hybrid_replay.py",
+      "sha256": "ff7862cdea343e118951818e234431c3e9c19dc9e18236a537399290cc287413",
+      "bytes": 3341,
+      "source_working_tree_path": "src/hybrid_replay.py",
+      "source_sha256": "ff7862cdea343e118951818e234431c3e9c19dc9e18236a537399290cc287413",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/models.py",
+      "sha256": "75b08f07c213dc95884240f40501e637bc43119de0cdfe5b9d826e319407f2b9",
+      "bytes": 1632,
+      "source_working_tree_path": "src/models.py",
+      "source_sha256": "75b08f07c213dc95884240f40501e637bc43119de0cdfe5b9d826e319407f2b9",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/motor_actuator.py",
+      "sha256": "1c41e8799b956b8fac8988f4cc9955b50a35e3c624cff69ca3f34614c789750e",
+      "bytes": 9501,
+      "source_working_tree_path": "src/motor_actuator.py",
+      "source_sha256": "1c41e8799b956b8fac8988f4cc9955b50a35e3c624cff69ca3f34614c789750e",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/mpc.py",
+      "sha256": "ea9e0688ec639e67508f4fa4a2dc4ee293f89e6ea9f2beae168142917af51a24",
+      "bytes": 6492,
+      "source_working_tree_path": "src/mpc.py",
+      "source_sha256": "ea9e0688ec639e67508f4fa4a2dc4ee293f89e6ea9f2beae168142917af51a24",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/multirate_quadrotor.py",
+      "sha256": "e65b832cc3dcf8a033726ea2bd946af6059282ac0205496a9a3011e2eace3ecd",
+      "bytes": 5799,
+      "source_working_tree_path": "src/multirate_quadrotor.py",
+      "source_sha256": "e65b832cc3dcf8a033726ea2bd946af6059282ac0205496a9a3011e2eace3ecd",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/physical_wind_3d.py",
+      "sha256": "0b440c6d99933036c335b009284029e0ebb8819c4f67b44f9b747d9414a3902a",
+      "bytes": 11796,
+      "source_working_tree_path": "src/physical_wind_3d.py",
+      "source_sha256": "0b440c6d99933036c335b009284029e0ebb8819c4f67b44f9b747d9414a3902a",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/realtime_dynamics.py",
+      "sha256": "c4a24b26d7d913127bb5708f42d452c4027e56f1161c4d5d063ecc76fbfd948c",
+      "bytes": 5564,
+      "source_working_tree_path": "src/realtime_dynamics.py",
+      "source_sha256": "c4a24b26d7d913127bb5708f42d452c4027e56f1161c4d5d063ecc76fbfd948c",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/realtime_dynamics_3d.py",
+      "sha256": "c76ea384c8c82fb4cdfcb660508b9d227448d9d00a3ae93d084c9f7e26b4f8af",
+      "bytes": 3861,
+      "source_working_tree_path": "src/realtime_dynamics_3d.py",
+      "source_sha256": "c76ea384c8c82fb4cdfcb660508b9d227448d9d00a3ae93d084c9f7e26b4f8af",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/realtime_knode.py",
+      "sha256": "2c1feb3d2d6c32b9fcdfe69c8fe8f318f973267610db2f3470816a6ad9ffed69",
+      "bytes": 9913,
+      "source_working_tree_path": "src/realtime_knode.py",
+      "source_sha256": "2c1feb3d2d6c32b9fcdfe69c8fe8f318f973267610db2f3470816a6ad9ffed69",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/realtime_neural.py",
+      "sha256": "69a8f8449a70e8d7b4ae7014af5dc5e77d082aadf5ad2939e23dbc35f7315660",
+      "bytes": 10892,
+      "source_working_tree_path": "src/realtime_neural.py",
+      "source_sha256": "69a8f8449a70e8d7b4ae7014af5dc5e77d082aadf5ad2939e23dbc35f7315660",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/realtime_quadrotor3d_experiment.py",
+      "sha256": "cfc52437b3ea6865037a37723d72e22dca0b47f74856e4987730ece7dd8a8dc5",
+      "bytes": 118436,
+      "source_working_tree_path": "src/realtime_quadrotor3d_experiment.py",
+      "source_sha256": "1d9217fdee08bc4c89838accc0c59baab2163b824cf42730a08201a764a725f2",
+      "unchanged_from_source": false
+    },
+    {
+      "path": "src/realtime_t2s.py",
+      "sha256": "84b93736f19add0b4b2209f71034447df6a27c45dd0312e2baea651f2428db8f",
+      "bytes": 10655,
+      "source_working_tree_path": "src/realtime_t2s.py",
+      "source_sha256": "84b93736f19add0b4b2209f71034447df6a27c45dd0312e2baea651f2428db8f",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/spatiotemporal_gp_mpc.py",
+      "sha256": "76fc6cd6e1c453728ac92ff222eda142af0c8b7e5ef3a0330d43324b619a66e5",
+      "bytes": 26123,
+      "source_working_tree_path": "src/spatiotemporal_gp_mpc.py",
+      "source_sha256": "76fc6cd6e1c453728ac92ff222eda142af0c8b7e5ef3a0330d43324b619a66e5",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/ssi_mpc.py",
+      "sha256": "58eea776ab6ab24a2f0980728e65f9c873933a1ad6ad8c15c7ebc5065b0e4b02",
+      "bytes": 12794,
+      "source_working_tree_path": "src/ssi_mpc.py",
+      "source_sha256": "58eea776ab6ab24a2f0980728e65f9c873933a1ad6ad8c15c7ebc5065b0e4b02",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/ssi_rk4_aligned.py",
+      "sha256": "a93ef3273fafbf4fcab35e1e50658c6da4982d21af015ffe98b5e37253ea3546",
+      "bytes": 3226,
+      "source_working_tree_path": "src/ssi_rk4_aligned.py",
+      "source_sha256": "a93ef3273fafbf4fcab35e1e50658c6da4982d21af015ffe98b5e37253ea3546",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/state_measurement.py",
+      "sha256": "973141958bd8eec556c0e192206e8b31a7be84e017d100132893158cd8473f6c",
+      "bytes": 6579,
+      "source_working_tree_path": "src/state_measurement.py",
+      "source_sha256": "973141958bd8eec556c0e192206e8b31a7be84e017d100132893158cd8473f6c",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "src/utils.py",
+      "sha256": "9ef5422f039852ab6d501a0578811126161236d4704ed00fde5bea90accd6ba5",
+      "bytes": 1805,
+      "source_working_tree_path": "src/utils.py",
+      "source_sha256": "9ef5422f039852ab6d501a0578811126161236d4704ed00fde5bea90accd6ba5",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "tests/test_aligned_quadrotor_transition.py",
+      "sha256": "f153a399375de57b40f08bfb7a1281989e9d068072730820a4d815e3eb97510d",
+      "bytes": 3064,
+      "source_working_tree_path": "tests/test_aligned_quadrotor_transition.py",
+      "source_sha256": "f153a399375de57b40f08bfb7a1281989e9d068072730820a4d815e3eb97510d",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "tests/test_async_neural_update.py",
+      "sha256": "8af5b2995652f2390e16cafc619a6de37bfa6cecdca12c2dcf490f8522fdff49",
+      "bytes": 1601,
+      "source_working_tree_path": "tests/test_async_neural_update.py",
+      "source_sha256": "8af5b2995652f2390e16cafc619a6de37bfa6cecdca12c2dcf490f8522fdff49",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "tests/test_deadline_control.py",
+      "sha256": "91c6defa562498a989f7e822db96075413a4de2909bc29dcb133f218c530abc8",
+      "bytes": 5052,
+      "source_working_tree_path": "tests/test_deadline_control.py",
+      "source_sha256": "91c6defa562498a989f7e822db96075413a4de2909bc29dcb133f218c530abc8",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "tests/test_hybrid_replay.py",
+      "sha256": "b6c6dd703aa5fac2b42e402009c0d3a15ede51d8dac2ae962bfbe95f7151eabd",
+      "bytes": 3198,
+      "source_working_tree_path": "tests/test_hybrid_replay.py",
+      "source_sha256": "b6c6dd703aa5fac2b42e402009c0d3a15ede51d8dac2ae962bfbe95f7151eabd",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "tests/test_realtime_neural.py",
+      "sha256": "463554db1e7d9c3dfe9b935448246589bddb4a5e2bb915a489043a290d583282",
+      "bytes": 4161,
+      "source_working_tree_path": "tests/test_realtime_neural.py",
+      "source_sha256": "463554db1e7d9c3dfe9b935448246589bddb4a5e2bb915a489043a290d583282",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "tests/test_realtime_t2s.py",
+      "sha256": "d142b57c48e324877c93803e19533e925ee4f3c6e8ab1859587b2a59e77d5eb4",
+      "bytes": 5783,
+      "source_working_tree_path": "tests/test_realtime_t2s.py",
+      "source_sha256": "d142b57c48e324877c93803e19533e925ee4f3c6e8ab1859587b2a59e77d5eb4",
+      "unchanged_from_source": true
+    },
+    {
+      "path": "tests/test_reproduce_paper.py",
+      "sha256": "0eb88f7b5b15b8860cad9d7925a2ac9746d62cfea53a30a491f3f159fe6b9544",
+      "bytes": 13120
+    },
+    {
+      "path": "tests/test_run_go2.py",
+      "sha256": "1b5a0cd0a4603cfd40abd19ea29c280324976b0d418296a604c1bbf3456f03dc",
+      "bytes": 8801
+    },
+    {
+      "path": "tests/test_run_quadrotor.py",
+      "sha256": "72f374ad6c8840ee567332a12fa5884648d00060aec52dec09a96dc0dfd4f7fc",
+      "bytes": 5719
+    },
+    {
+      "path": "tests/test_ssi_rk4_aligned.py",
+      "sha256": "b15d308de9b73bece1d0331edb3c4f65a060d5b8a8892fe0f3341c2f52776231",
+      "bytes": 3651,
+      "source_working_tree_path": "tests/test_ssi_rk4_aligned.py",
+      "source_sha256": "b15d308de9b73bece1d0331edb3c4f65a060d5b8a8892fe0f3341c2f52776231",
+      "unchanged_from_source": true
+    }
+  ]
+}

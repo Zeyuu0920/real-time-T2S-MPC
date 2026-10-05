@@ -1,0 +1,42 @@
+{
+  "description": "Dependency checkouts inspected during public source extraction. These revisions describe the local source checkouts; a fresh installation has not been validated. Python versions are recorded under requirements/.",
+  "dependencies": [
+    {
+      "name": "acados",
+      "role": "MPC solver and Python interface",
+      "repository": "https://github.com/acados/acados.git",
+      "commit": "a26c7d0ce9a729dd982877ffccff312cb0ca1bbc",
+      "local_modifications": [],
+      "patch": null
+    },
+    {
+      "name": "safe-control-gym",
+      "role": "Quadrotor simulator",
+      "repository": "https://github.com/learnsyslab/safe-control-gym.git",
+      "commit": "6b5391d014f36fdfa0f9d22d92c77387e5274308",
+      "local_modifications": [],
+      "patch": null
+    },
+    {
+      "name": "l4acados",
+      "role": "Spatiotemporal GP implementation",
+      "repository": "https://github.com/IntelligentControlSystems/l4acados.git",
+      "commit": "e26ab16fc73a554a1773cc3c491f7b8a848cb935",
+      "local_modifications": [],
+      "patch": null
+    },
+    {
+      "name": "go2-convex-mpc",
+      "role": "Go2 models and control utilities",
+      "repository": "https://github.com/elijah-waichong-chan/go2-convex-mpc.git",
+      "commit": "1c63c6a762779887ab0431fd60db681dede6cb32",
+      "reference_checkout_local_modifications": [
+        "src/convex_mpc/com_trajectory.py"
+      ],
+      "public_installation": "Unmodified pinned upstream checkout; the local reference-checkout modifications are not distributed or applied.",
+      "public_entrypoint": "scripts/run_go2.py",
+      "validation": "Verified imports and active gait/reference/foothold helpers using the original pinned com_trajectory.py. No model construction or closed-loop simulation was run.",
+      "legacy_limitation": "The retained run_paper_baseline function in src/go2_paper_experiment.py uses reference-trajectory extensions; it is not called by the supported public entrypoint."
+    }
+  ]
+}

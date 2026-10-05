@@ -1,0 +1,6 @@
+# Selected quadrotor import dependencies, not every safe-control-gym controller.
+# Install safe-control-gym separately with --no-deps; see README.md#installation.
+-r simulation.txt
+pybullet==3.2.7
+gymnasium==0.28.1
+PyYAML==6.0.2

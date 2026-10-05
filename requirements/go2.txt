@@ -1,0 +1,5 @@
+# The PyPI distribution "pin" supplies the Python module "pinocchio".
+# Keep the external Go2 source checkout: it contains the required model assets.
+-r simulation.txt
+mujoco==3.3.0
+pin==4.1.0

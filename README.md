@@ -2,8 +2,6 @@
 
 PyTorch and acados implementation of **T2S-MPC** for online adaptation to time-varying robot dynamics, with quadrotor and Unitree Go2 simulation experiments.
 
-> **Code release pending.** The README and demonstration are available. Installation and experiment commands will work after the simulation source files are published.
-
 ## Table of Contents
 
 - [Demonstration Video](#demonstration-video)
