@@ -10,7 +10,6 @@ PyTorch and acados implementation of **T2S-MPC** for online adaptation to time-v
 - [How to Run](#how-to-run)
   - [Quadrotor: wind and turbulence](#quadrotor-wind-and-turbulence)
   - [Go2: payload and ground friction](#go2-payload-and-ground-friction)
-  - [Sim-to-real interfaces](#sim-to-real-interfaces)
 - [Reproduce Paper Results](#reproduce-paper-results)
 - [Project Structure](#project-structure)
 - [Acknowledgements](#acknowledgements)
@@ -58,6 +57,8 @@ Use `--system quadrotor` or `--system go2` to install only the corresponding sim
 
 Run a single experiment, choose a controller, and adjust the disturbance strength from the command line. `--method` accepts `t2s`, `nominal`, `ssi`, or `stgp`. Add `--dry-run` to inspect the effective settings without installing or starting a simulator.
 
+The runners save effective settings and trial outputs under `outputs/`; use a new `--output-dir` for a new comparison. When using a JSON profile, its contents and hash are also recorded. Run trials serially within a checkout because solver generation shares build locations. See `--help` for all options.
+
 ### Quadrotor: wind and turbulence
 
 <p align="center">
@@ -86,6 +87,23 @@ python scripts/run_quadrotor.py --method t2s --scenario combined \
 ```
 
 Both scale factors accept zero. They preserve the spatial pattern parameters and ramp duration. The defaults pin control to CPU 2 and training to CPU 4; add `--no-affinity` on machines without those CPUs, or choose cores with `--control-cpu-core` and `--trainer-cpu-core`.
+
+**Observation and actuator settings**
+
+Edit the `observation` and `actuator` sections in [quadrotor_example.json](configs/sim2real/quadrotor_example.json) to customize sensor and motor effects. The example contains synthetic settings that you can replace with measurements from your hardware.
+
+| Section | Configurable effects |
+| --- | --- |
+| `observation` | Delay; position, velocity, attitude, and body-rate noise; noise correlation time |
+| `actuator` | Rotor-speed lag, fixed thrust-gain error, and correlated thrust noise |
+
+```bash
+python scripts/run_quadrotor.py --method t2s --scenario combined \
+  --sim2real-config configs/sim2real/quadrotor_example.json \
+  --output-dir outputs/quadrotor_sim2real
+```
+
+See [parameter units](docs/sim2real.md#profile-format-and-units) and [how these settings enter the quadrotor simulation](docs/sim2real.md#quadrotor).
 
 ### Go2: payload and ground friction
 
@@ -116,30 +134,22 @@ python scripts/run_go2.py --method t2s --scenario combined --seed 42 \
 
 The liquid default is 3.4 → 1.4 kg during 5–45 s, in addition to the container. Friction overrides preserve the seed's spatial pattern and change the simulated ground; the MPC friction-cone coefficient stays at `0.5`.
 
-Both runners save effective settings and trial outputs under `outputs/`; use a new `--output-dir` for a new comparison. Run trials serially within a checkout because solver generation shares build locations. See `--help` for all options.
+**Observation and actuator settings**
 
-### Sim-to-real interfaces
+Edit the `observation` and `actuator` sections in [go2_example.json](configs/sim2real/go2_example.json) to customize sensor and joint response. The example contains synthetic settings that you can replace with measurements from your hardware.
 
-Use a JSON profile to customize the simulated observation and actuator interfaces. Start from an [example profile](configs/sim2real/) and edit its `observation` and `actuator` sections; fields include physical units in their names.
-
-| Interface | Quadrotor | Go2 sim-to-real mode |
-| --- | --- | --- |
-| Observation | Delay and position, velocity, attitude, and body-rate noise | Coherent delayed/noisy MPC state packet |
-| Actuator | Rotor-speed lag, fixed thrust-gain error, and correlated thrust noise | Joint-torque lag and fixed joint-gain error |
+| Section | Configurable effects |
+| --- | --- |
+| `observation` | MPC state-packet delay; position, velocity, attitude, and body-rate noise; noise correlation time |
+| `actuator` | Joint-torque lag and fixed joint-gain error |
 
 ```bash
-python scripts/run_quadrotor.py --method t2s --scenario combined \
-  --sim2real-config configs/sim2real/quadrotor_example.json \
-  --output-dir outputs/quadrotor_sim2real
-
 python scripts/run_go2_sim2real.py --method t2s --scenario combined \
   --sim2real-config configs/sim2real/go2_example.json \
   --output-dir outputs/go2_sim2real
 ```
 
-Add `--dry-run` to inspect effective values. The profile and its hash are recorded with each trial. These parameters are synthetic stress-test settings that you can replace with measurements from your hardware.
-
-Go2 uses a separate experimental driver with delayed MPC observations, joint response, and command release within the control period; its 500 Hz low-level controller retains ideal proprioception. It is a different timing protocol from `run_go2.py`. For the quadrotor, the motor time constant also updates the MPC model and motor-state observer; gain error and thrust noise are hidden plant disturbances. See [interface parameters and examples](docs/sim2real.md).
+See [parameter units](docs/sim2real.md#profile-format-and-units) and [how these settings enter the Go2 simulation](docs/sim2real.md#go2).
 
 ## Reproduce Paper Results
 
