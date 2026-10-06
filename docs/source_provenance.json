@@ -10,8 +10,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "5ef6010faa028f912c51631f918fa3176d5a5a594b10c388bdf03cf2a313a5a1",
-      "bytes": 11035
+      "sha256": "e00e61e9e8b02c27c7b48477e0b9fb18cd5251eb61ba05f0602adff0ba6a60de",
+      "bytes": 10801
     },
     {
       "path": "assets/go2/fields/seed42.npz",

@@ -86,7 +86,7 @@ python scripts/run_quadrotor.py --method t2s --scenario combined \
   --output-dir outputs/quadrotor_custom
 ```
 
-Both scale factors accept zero. They preserve the spatial pattern parameters and ramp duration. The defaults pin control to CPU 2 and training to CPU 4; add `--no-affinity` on machines without those CPUs, or choose cores with `--control-cpu-core` and `--trainer-cpu-core`.
+The defaults pin control to CPU 2 and training to CPU 4; add `--no-affinity` on machines without those CPUs, or choose cores with `--control-cpu-core` and `--trainer-cpu-core`.
 
 **Observation and actuator settings**
 
@@ -132,7 +132,7 @@ python scripts/run_go2.py --method t2s --scenario combined --seed 42 \
   --output-dir outputs/go2_custom
 ```
 
-The liquid default is 3.4 → 1.4 kg during 5–45 s, in addition to the container. Friction overrides preserve the seed's spatial pattern and change the simulated ground; the MPC friction-cone coefficient stays at `0.5`.
+The liquid default is 3.4 → 1.4 kg during 5–45 s, in addition to the container.
 
 **Observation and actuator settings**
 
